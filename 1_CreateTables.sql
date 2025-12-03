@@ -3,61 +3,97 @@ GO
 
 --GymTable--
 
-CREATE TABLE [dbo].[GymTable](
-	[GymId] [int] NOT NULL,
-	[GymName] [nvarchar](50) NULL,
-	[GymType] [nvarchar](20) NOT NULL,
-	[GymDescription] [nvarchar](max) NULL);
-	GO
+CREATE TABLE GymTable (
+    GymId INT IDENTITY(200,1) NOT NULL,
+    GymName NVARCHAR(50),
+    GymType NVARCHAR(20) NOT NULL,
+    PermissionId INT,
+    GymDescription NVARCHAR(MAX),
+    CONSTRAINT PK_GymTable PRIMARY KEY (GymId),
+    CONSTRAINT UQ_GymTable_GymName UNIQUE (GymName),
+    CONSTRAINT FK_GymTable_PermissionTable 
+        FOREIGN KEY (PermissionId) REFERENCES PermissionTable(PermissionId)
+);
+GO
 
 --LoginTable--
 
-CREATE TABLE [dbo].[LoginTable](
-	[LoginId] [int] NOT NULL,
-	[LoginUsername] [nvarchar](50) NOT NULL,
-	[LoginPassword] [nvarchar](40) NOT NULL);
-	GO
+CREATE TABLE LoginTable (
+    LoginId INT IDENTITY(1,1) NOT NULL,
+    LoginUsername NVARCHAR(50) NOT NULL,
+    LoginPassword NVARCHAR(40) NOT NULL,
+
+    CONSTRAINT PK_LoginTable PRIMARY KEY (LoginId),
+    CONSTRAINT UQ_LoginTable_Username UNIQUE (LoginUsername)
+);
+GO
 
 --PaymentTable--
 
-CREATE TABLE [dbo].[PaymentTable](
-	[PaymentId] [int] NOT NULL,
-	[CostumerId] [int] NOT NULL,
-	[PaymentDate] [date] NULL,
-	[PaymentDescription] [nvarchar](max) NOT NULL,
-	[PaymentAmount] [smallmoney] NOT NULL);
-	GO
+CREATE TABLE PaymentTable (
+    PaymentId INT NOT NULL,
+    CustomerId INT NOT NULL,
+    PaymentDate DATE,
+    PaymentDescription NVARCHAR(MAX) NOT NULL,
+    PaymentAmount SMALLMONEY NOT NULL,
+
+    CONSTRAINT PK_PaymentTable PRIMARY KEY (PaymentId, CustomerId),
+    CONSTRAINT FK_PaymentTable_UserTable
+        FOREIGN KEY (CustomerId) REFERENCES UserTable(UserId)
+);
+GO
 
 --PermissionTable--
 
-CREATE TABLE [dbo].[PermissionTable](
-	[PermissionId] [int] NOT NULL,
-	[PermissionModule] [nvarchar](50) NULL,
-	[PermissionName] [nvarchar](40) NOT NULL,
-	[PermissionDescription] [nvarchar](max) NULL);
-	GO
+CREATE TABLE PermissionTable (
+    PermissionId INT IDENTITY(300,1) NOT NULL,
+    PermissionModule NVARCHAR(50),
+    PermissionName NVARCHAR(40) NOT NULL,
+    PermissionDescription NVARCHAR(MAX),
+
+    CONSTRAINT PK_PermissionTable PRIMARY KEY (PermissionId),
+    CONSTRAINT UQ_PermissionTable_Name UNIQUE (PermissionName)
+);
+GO
 
 --TrainerTable--
 
-CREATE TABLE [dbo].[TrainerTable](
-	[TrainerId] [smallint] NOT NULL,
-	[TrainerName] [nvarchar](20) NOT NULL,
-	[TrainerSurname] [nvarchar](20) NOT NULL,
-	[TrainerPassword] [nvarchar](35) NOT NULL,
-	[TrainerPhone] [int] NOT NULL,
-	[TrainerAddress] [nvarchar](max) NULL);
-	GO
+CREATE TABLE TrainerTable (
+    TrainerId NCHAR(10) NOT NULL,
+    TrainerName NVARCHAR(20) NOT NULL,
+    TrainerSurname NVARCHAR(20) NOT NULL,
+    TrainerPassword NVARCHAR(35) NOT NULL,
+    TrainerPhone INT NOT NULL,
+    TrainerAddress NVARCHAR(MAX),
+
+    CONSTRAINT PK_TrainerTable PRIMARY KEY (TrainerId),
+    CONSTRAINT UQ_TrainerTable_Phone UNIQUE (TrainerPhone)
+);
+GO
 
 --User Table--
 
-CREATE TABLE [dbo].[UserTable](
-	[UserId] [int] NOT NULL,
-	[UserName] [nvarchar](25) NOT NULL,
-	[UserSurname] [nvarchar](25) NOT NULL,
-	[UserPhone] [int] NOT NULL,
-	[UserEmail] [ntext] NULL,
-	[UserAddress] [nvarchar](250) NULL);
-	GO
+CREATE TABLE UserTable (
+    UserId INT IDENTITY(1,1) NOT NULL,
+    UserName NVARCHAR(25) NOT NULL,
+    UserSurname NVARCHAR(25) NOT NULL,
+    UserPhone INT NOT NULL,
+    UserEmail NVARCHAR(250),
+    TrainerId NCHAR(10),
+    GymId INT,
+    UserAddress NVARCHAR(250),
+
+    CONSTRAINT PK_UserTable PRIMARY KEY (UserId),
+    CONSTRAINT UQ_UserTable_Phone UNIQUE (UserPhone),
+    CONSTRAINT UQ_UserTable_Email UNIQUE (UserEmail),
+
+    CONSTRAINT FK_UserTable_GymTable
+        FOREIGN KEY (GymId) REFERENCES GymTable(GymId),
+
+    CONSTRAINT FK_UserTable_TrainerTable
+        FOREIGN KEY (TrainerId) REFERENCES TrainerTable(TrainerId)
+);
+GO
 
 
 

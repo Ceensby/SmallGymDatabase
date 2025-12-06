@@ -30,7 +30,7 @@ yönetebilmesi için tasarlanmıştır.
 
 <h2> 2-Database Diyagramı  </h2>
 Aşağıda projenin ilişkisel veri modeli bulunmaktadır:
-
+<br>
 <img width="600" height="400" alt="SmallGymDatabaseDiagram" src="https://github.com/user-attachments/assets/f43746c1-fa6a-48de-8107-28cf7540a284" />
 
 <h2> 3-Kullanılan SQL Dosyaları </h2>

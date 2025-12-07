@@ -161,7 +161,7 @@ Veritabanı hazır hale gelir.
 <h2> 7-Dummy Data </h2>
 Dummy veri dosyasının eski sürümüne ulaşabilirsiniz ama bu sadece dosyanızın ilk halinde işe yarar.
 <br>
-Şuanda yüklü olan Dummy dosyası güncellenecektir.
+Şuanda yüklü olan Dummy dosyası güncellenecektir.Dummy dosyasının eski sürümüni mümkünse kullanmayınız.
 
 <h2> 8-Lisans </h2>
 
